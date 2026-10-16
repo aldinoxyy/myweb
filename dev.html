@@ -2,61 +2,169 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LèxaaDev Desktop</title>
+<title>LèxaaDev</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
-* { margin:0; padding:0; box-sizing:border-box; font-family: monospace; }
-body { background:#000; color:#fff; }
-.header { background:#111; border-bottom:1px solid #222; padding:15px 20px; display:flex; justify-content:space-between; position:sticky; top:0; }
-.container { display:grid; grid-template-columns: 320px 1fr; gap:15px; padding:15px; max-width:1300px; margin:auto; }
-.card { background:#111; border:1px solid #222; border-radius:12px; padding:15px; }
-input,select,button { padding:10px; border-radius:8px; border:1px solid #333; background:#000; color:#fff; margin:4px 0; width:100%; }
-button { background:#fff; color:#000; font-weight:bold; cursor:pointer; width:auto; padding:8px 15px; }
-.item { background:#0a0a0a; border:1px solid #222; border-radius:8px; padding:10px; margin:8px 0; font-size:13px; }
-@media(max-width:800px){ .container{grid-template-columns:1fr} }
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; }
+body { background:#000; background-image: radial-gradient(circle at 20% 30%, rgba(120,0,255,0.12), transparent 50%), radial-gradient(circle at 80% 80%, rgba(0,120,255,0.08), transparent 50%); min-height:100vh; color:#fff; padding:0; }
+.header { padding:28px 20px 10px; max-width:900px; margin:auto; display:flex; justify-content:space-between; align-items:center; }
+.header h1 { font-size:22px; font-weight:700; letter-spacing:4px; }
+.header .status { color:#0f0; font-size:10px; letter-spacing:1px; background:#0f0f0f; border:1px solid #1a1a1a; padding:6px 12px; border-radius:20px; }
+.container { max-width:900px; margin:auto; padding:15px; display:grid; grid-template-columns: 300px 1fr; gap:14px; }
+@media(max-width:700px){ .container{ grid-template-columns:1fr; } }
+.card { background: rgba(18,18,18,0.9); border:1px solid rgba(255,255,255,0.07); border-radius:20px; padding:18px; backdrop-filter: blur(15px); box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); }
+.card h3 { font-size:11px; letter-spacing:2px; color:#777; margin-bottom:14px; text-transform:uppercase; }
+input, select { width:100%; padding:12px 14px; border-radius:12px; border:1px solid #222; background:#0a0a0a; color:#fff; outline:none; margin:6px 0; font-size:13px; }
+input:focus, select:focus { border-color:#333; background:#111; }
+.btn { padding:10px 16px; border-radius:10px; border:none; font-weight:700; cursor:pointer; font-size:13px; }
+.btn-white { background:#fff; color:#000; }
+.btn-dark { background:#1a1a1a; color:#fff; border:1px solid #262626; }
+.btn-create { width:100%; margin-top:8px; }
+.req { background:#0f0f0f; border:1px solid #1e1e1e; border-radius:14px; padding:14px; margin:10px 0; }
+.req-top { display:flex; justify-content:space-between; gap:10px; }
+.req-code-input { display:flex; gap:8px; margin-top:10px; }
+.req-code-input input { margin:0; flex:1; }
+.small { font-size:11px; color:#666; margin-top:4px; }
+.badge { font-size:10px; padding:4px 8px; border-radius:6px; background:#1a1a1a; border:1px solid #222; }
+.badge.waiting { color:#fbbf24; }
+.badge.connected { color:#0f0; }
+.badge.failed { color:#f55; }
+.footer { text-align:center; padding:30px 20px; font-size:11px; color:#444; letter-spacing:1px; }
+.footer a { color:#3b82f6; text-decoration:none; font-weight:600; }
 </style>
 </head>
 <body>
-<div class="header"><h3>👑 LèxaaDev - DESKTOP MODE - NO CLOUDFLARE</h3><span style="color:#0f0">● LOCAL</span></div>
+
+<div class="header">
+<h1>LÈXAA DEV</h1>
+<div class="status">● LOCAL ACTIVE</div>
+</div>
+
 <div class="container">
 <div>
-<div class="card"><h4>CREATE ACCOUNT</h4><input id="u" placeholder="username"><input id="p" placeholder="password"><select id="exp"><option value="7">7 Hari</option><option value="30">30 Hari</option><option value="unlimited">Unlimited</option></select><button onclick="create()">CREATE</button></div>
-<div class="card" style="margin-top:15px"><h4>LIST USER</h4><div id="listUser"></div></div>
+<div class="card">
+<h3>Create Account</h3>
+<input id="nu" placeholder="Username">
+<input id="np" placeholder="Password">
+<select id="nd"><option value="1">1 Hari</option><option value="7">7 Hari</option><option value="30">30 Hari</option><option value="unlimited">Unlimited</option></select>
+<button class="btn btn-white btn-create" onclick="createUser()">CREATE</button>
 </div>
+<div class="card" style="margin-top:14px">
+<h3>List User</h3>
+<div id="users"></div>
+</div>
+</div>
+
 <div>
-<div class="card"><h4>ANTRIAN - AUTO CLOSE 30 MENIT</h4><div id="listReq"></div></div>
+<div class="card">
+<h3>Antrian - Auto Close 30 Menit</h3>
+<div id="reqs"></div>
 </div>
 </div>
+</div>
+
+<div class="footer">© 2026 LèxaaMj • All Rights Reserved<br><br>Need help? <a href="https://wa.me/6285642367261" target="_blank">Contact Support</a></div>
+
 <script>
 function getUsers(){ return JSON.parse(localStorage.getItem('lex_users')||'[]'); }
 function saveUsers(u){ localStorage.setItem('lex_users', JSON.stringify(u)); }
 function getReqs(){ return JSON.parse(localStorage.getItem('lex_reqs')||'[]'); }
 function saveReqs(r){ localStorage.setItem('lex_reqs', JSON.stringify(r)); }
 
-function loadUsers(){ const d=getUsers(); document.getElementById('listUser').innerHTML=d.length==0?'No user':d.map(x=>`<div class="item">${x.username}<br><small>${x.isUnlimited?'♾️ Unlimited':x.expiredAt}</small><br><button onclick="del('${x.username}')">Delete</button></div>`).join(''); }
-function create(){
- const username=document.getElementById('u').value,password=document.getElementById('p').value,exp=document.getElementById('exp').value;
- if(!username||!password) return alert('Isi dulu');
- const isUnlimited=exp=='unlimited';
- const expiredAt=isUnlimited?'unlimited':new Date(Date.now()+parseInt(exp)*86400000).toISOString().split('T')[0];
+function createUser(){
+ const u=nu.value.trim(), p=np.value.trim(), d=nd.value;
+ if(!u||!p) return alert('isi username password');
  const users=getUsers();
- users.push({username,password,expiredAt,isUnlimited});
- saveUsers(users); loadUsers(); alert('Created');
+ if(users.find(x=>x.username==u)) return alert('username sudah ada');
+ let expiredAt = null;
+ if(d!='unlimited'){ const t=new Date(); t.setDate(t.getDate()+parseInt(d)); expiredAt=t.toISOString(); }
+ users.push({username:u,password:p,expiredAt,isUnlimited:d=='unlimited'});
+ saveUsers(users);
+ nu.value=''; np.value='';
+ render();
 }
-function del(username){ let u=getUsers(); u=u.filter(x=>x.username!=username); saveUsers(u); loadUsers(); }
-function loadReq(){
- let reqs=getReqs();
- // auto close 30 menit & kode 5 menit
+
+function render(){
+ // USERS
+ const users=getUsers();
+ document.getElementById('users').innerHTML = users.map(u=>`
+  <div class="req">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div><b style="font-size:13px">${u.username}</b><br><span class="small">${u.isUnlimited?'Unlimited':'Exp: '+new Date(u.expiredAt).toLocaleDateString()}</span></div>
+      <button class="btn btn-dark" onclick="delUser('${u.username}')">Delete</button>
+    </div>
+  </div>
+ `).join('') || '<span class="small">Belum ada user</span>';
+
+ // REQS - JANGAN RENDER ULANG KALO LAGI NGETIK KODE
+ const activeInput = document.activeElement;
+ const isTypingCode = activeInput && activeInput.id && activeInput.id.startsWith('c_');
+ const typingId = isTypingCode ? activeInput.id : null;
+ const typingValue = isTypingCode ? activeInput.value : '';
+
+ if(!isTypingCode){
+   const reqs=getReqs().slice().reverse();
+   document.getElementById('reqs').innerHTML = reqs.map(r=>{
+     const ago = Math.floor((Date.now()-r.time)/1000);
+     const agoText = ago<60?`${ago}s ago`: `${Math.floor(ago/60)}m ${ago%60}s ago`;
+     return `
+     <div class="req">
+       <div class="req-top">
+         <div><b style="font-size:12px">${r.service.toUpperCase()} | ${r.username}</b><br><span style="font-size:13px">${r.phone}</span><br><span class="small">Status: ${r.status} | ${agoText}</span></div>
+         <span class="badge ${r.status}">${r.status}</span>
+       </div>
+       ${r.status=='waiting'?`
+       <div class="req-code-input">
+         <input id="c_${r.id}" placeholder="Ketik kode..." autocomplete="off">
+         <button class="btn btn-white" onclick="sendCode('${r.id}')">Kirim Kode</button>
+       </div>
+       <div style="margin-top:8px;display:flex;gap:6px">
+         <button class="btn btn-dark" style="font-size:11px" onclick="setStatus('${r.id}','failed')">Reject</button>
+         <button class="btn btn-dark" style="font-size:11px" onclick="delReq('${r.id}')">Hapus</button>
+       </div>
+       `:`
+       <div style="margin-top:10px;display:flex;gap:6px">
+         <button class="btn btn-dark" style="font-size:11px" onclick="setStatus('${r.id}','connected')">Connected</button>
+         <button class="btn btn-dark" style="font-size:11px" onclick="delReq('${r.id}')">Hapus</button>
+       </div>
+       ${r.code?`<div style="margin-top:8px"><span class="small">Code:</span> <b>${r.code}</b></div>`:''}
+       `}
+     </div>
+     `
+   }).join('') || '<span class="small">Tidak ada antrian</span>';
+ } else {
+   // restore typing value if we skipped render, but if render happened we restore
+   // actually we skipped render, so keep as is
+ }
+}
+
+function delUser(u){ if(!confirm('hapus '+u+'?')) return; saveUsers(getUsers().filter(x=>x.username!=u)); render(); }
+function delReq(id){ saveReqs(getReqs().filter(x=>x.id!=id)); render(); }
+function sendCode(id){
+ const input=document.getElementById('c_'+id);
+ const code=input.value.trim();
+ if(!code) return alert('isi kode');
+ const reqs=getReqs(); const r=reqs.find(x=>x.id==id); if(!r) return;
+ r.status='code_sent'; r.code=code; r.codeTime=Date.now();
+ saveReqs(reqs); render();
+}
+function setStatus(id,status){ const reqs=getReqs(); const r=reqs.find(x=>x.id==id); r.status=status; if(status=='failed') r.reason='Rejected by Admin'; saveReqs(reqs); render(); }
+
+render();
+// CEK AUTO CLOSE TAPI JANGAN RE-RENDER PAS NGETIK
+setInterval(()=>{
+ const reqs=getReqs(); let changed=false;
  reqs.forEach(r=>{
-   if(r.status=='waiting' && Date.now()-r.time>30*60*1000){ r.status='failed'; r.reason='Timeout 30 menit - Admin tidak menjawab'; }
-   if(r.status=='code_sent' && Date.now()-r.codeTime>5*60*1000){ r.status='expired'; }
+   if(r.status=='waiting' && Date.now()-r.time>30*60*1000){ r.status='failed'; r.reason='Timeout 30 menit'; changed=true; }
+   if(r.status=='code_sent' && Date.now()-r.codeTime>5*60*1000){ r.status='expired'; changed=true; }
  });
- saveReqs(reqs);
- document.getElementById('listReq').innerHTML=reqs.length==0?'<small>No request</small>':reqs.map(x=>`<div class="item"><b>${x.service.toUpperCase()}</b> | ${x.username} | ${x.phone}<br>Status: ${x.status} | ${Math.floor((Date.now()-x.time)/1000)}s ago<br>${x.status=='waiting'?`<input id="code-${x.id}" placeholder="8 digit"><button onclick="sendCode('${x.id}')">Kirim Kode</button>`:''}${x.status=='code_sent'?`Kode: <b>${x.code}</b><br><button onclick="setStatus('${x.id}','connected')">✅ Connect</button> <button onclick="setStatus('${x.id}','failed')">❌ Gagal</button>`:''}${x.status=='connected'?`✅ Connected`:''}<br><button onclick="removeReq('${x.id}')">Hapus</button></div>`).join('');
-}
-function sendCode(id){ const code=document.getElementById('code-'+id).value; let r=getReqs(); const f=r.find(x=>x.id==id); f.code=code; f.status='code_sent'; f.codeTime=Date.now(); saveReqs(r); loadReq(); }
-function setStatus(id,status){ let r=getReqs(); const f=r.find(x=>x.id==id); f.status=status; if(status=='failed') f.reason='Ditolak Admin'; saveReqs(r); loadReq(); }
-function removeReq(id){ let r=getReqs(); r=r.filter(x=>x.id!=id); saveReqs(r); loadReq(); }
-loadUsers(); loadReq(); setInterval(loadReq,3000);
+ if(changed){ saveReqs(reqs); }
+ // only re-render if not typing
+ const active = document.activeElement;
+ if(!(active && active.id && active.id.startsWith('c_'))){
+   render();
+ }
+},2000);
 </script>
 </body>
 </html>
