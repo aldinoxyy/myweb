@@ -4,141 +4,150 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lexa Download - HD No WM</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Cormorant+Garamond:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Cormorant+Garamond:wght@500;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{min-height:100vh;display:flex;flex-direction:column;background:#05070d;color:#e8e8e8;font-family:'Inter',system-ui;background-image:linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.9)),url('bg.jpg');background-size:cover;background-position:center;background-attachment:fixed}
-.h{padding:16px 20px;display:flex;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.06);backdrop-filter:blur(10px)}
-.logo{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:24px;letter-spacing:.5px}.logo span{color:#8ecfff;font-weight:400}
-.t{margin-top:30px;text-align:center;font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:600;letter-spacing:-.5px}.t span{color:#8ecfff;font-weight:400}
-.sub{text-align:center;opacity:.35;letter-spacing:5px;font-size:10px;margin-top:6px;font-weight:300}
-.box{margin:26px auto;max-width:560px;width:90%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:28px;display:flex;align-items:center;padding:0 6px 0 18px;backdrop-filter:blur(14px)}
-.box input{flex:1;background:transparent;border:none;outline:none;color:#fff;padding:16px 10px;font-size:13px;font-weight:300;letter-spacing:.3px;font-family:'Inter'}
-.box button{background:#8ecfff;color:#000;border:none;padding:12px 22px;border-radius:22px;font-size:10px;font-weight:700;letter-spacing:1.5px;cursor:pointer}
-#status{text-align:center;margin-top:18px;font-size:11px;letter-spacing:2.5px;font-weight:300;text-transform:uppercase;opacity:.6;min-height:16px}
-.results{max-width:580px;margin:16px auto;padding:0 14px;flex:1;width:100%}
-.card{background:rgba(18,22,36,.62);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:14px;display:flex;gap:14px;margin-bottom:10px;backdrop-filter:blur(10px)}
-.card img{width:62px;height:62px;border-radius:10px;object-fit:cover;opacity:.9}
-.card b{font-size:13.5px;font-weight:500;letter-spacing:.2px;display:block} 
-.card small{opacity:.45;font-size:11.5px;font-weight:300;letter-spacing:.3px;display:block;margin-top:2px}
-.btns{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
-.btn{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.18);padding:6px 16px;border-radius:20px;font-weight:400;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:'Inter';transition:.2s}
-.btn:hover{border-color:#fff;background:rgba(255,255,255,.08)}
-.btn2{border-color:rgba(142,207,255,.4);color:#8ecfff}
-.btn2:hover{background:rgba(142,207,255,.1);border-color:#8ecfff}
-.player{position:fixed;bottom:0;left:0;width:100%;background:rgba(10,14,25,.94);backdrop-filter:blur(16px);padding:12px 16px;display:none;border-top:1px solid rgba(255,255,255,.06)}
-.footer{margin-top:auto;text-align:center;padding:38px 0 20px;opacity:.35;font-size:10px;letter-spacing:1.5px;font-weight:300;line-height:1.8;font-family:'Inter'}
+body{min-height:100vh;display:flex;flex-direction:column;background:#05070d;color:#e8e8e8;font-family:'Inter';background-image:linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.92)),url('bg.jpg');background-size:cover;background-position:center;background-attachment:fixed}
+.h{padding:16px 20px;display:flex;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.06);backdrop-filter:blur(12px)}
+.logo{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:24px}.logo span{color:#8ecfff}
+.t{margin-top:28px;text-align:center;font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:600}.t span{color:#8ecfff}
+.sub{text-align:center;opacity:.35;letter-spacing:5px;font-size:10px;margin-top:6px}
+.box{margin:22px auto;max-width:580px;width:90%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:28px;display:flex;align-items:center;padding:0 6px 0 18px;backdrop-filter:blur(14px)}
+.box input{flex:1;background:transparent;border:none;outline:none;color:#fff;padding:16px 10px;font-size:13px}
+.box button{background:#8ecfff;color:#000;border:none;padding:12px 22px;border-radius:22px;font-size:10px;font-weight:700;letter-spacing:1px;cursor:pointer}
+#status{text-align:center;margin-top:14px;font-size:11px;letter-spacing:2px;opacity:.6;text-transform:uppercase}
+.results{max-width:600px;margin:18px auto;padding:0 14px;flex:1;width:100%}
+.preview{background:rgba(18,22,36,.88);border:1px solid rgba(142,207,255,.25);border-radius:20px;overflow:hidden;backdrop-filter:blur(12px)}
+.preview video,.preview img.thumb{width:100%;max-height:420px;object-fit:cover;display:block;background:#000}
+.preview.info{padding:18px}
+.platform{display:inline-block;padding:4px 12px;border-radius:12px;background:rgba(142,207,255,.15);color:#8ecfff;font-size:9px;letter-spacing:1.5px;margin-bottom:10px;border:1px solid rgba(142,207,255,.25)}
+.btn-dl{width:100%;padding:14px;border-radius:22px;background:#8ecfff;color:#000;border:none;font-weight:700;font-size:12px;letter-spacing:1px;cursor:pointer;margin-top:12px}
+.btn-dl:hover{background:#fff}
+.btn-row{display:flex;gap:8px;margin-top:10px}
+.btn{flex:1;padding:10px;border-radius:18px;border:1px solid rgba(255,255,255,.15);background:transparent;color:#aaa;font-size:10px;cursor:pointer}
+.footer{margin-top:auto;text-align:center;padding:30px 0 20px;opacity:.35;font-size:10px;letter-spacing:1.5px}
 </style>
 </head>
 <body>
-<div class="h"><div><div class="logo"><span>Spotify</span> LèxaaMj</div><div style="opacity:.4;font-size:9px;letter-spacing:3px;font-family:'Inter';font-weight:300;margin-top:2px">DOWNLOAD EDITION</div></div><div style="opacity:.35;font-size:9px;letter-spacing:2px;font-family:'Inter';font-weight:300">HD NO WM</div></div>
+<div class="h"><div><div class="logo"><span>Lexa</span> Download</div><div style="opacity:.4;font-size:9px;letter-spacing:3px;margin-top:2px">HD NO WM</div></div><div style="opacity:.35;font-size:9px;letter-spacing:2px">AUTO PREVIEW</div></div>
 <div class="t">Lèxaa <span>Download</span></div>
-<div class="sub">SPOTIFY • TIKTOK FOTO VIDEO • IG REELS POST • YT • HD NO WM</div>
-<div class="box"><input id="q" placeholder="paste link tiktok / ig / yt / spotify atau search judul..."><button onclick="handle()">DOWNLOAD</button></div>
-<div id="status">mp4 = mp4 • mp3 = mp3 • foto = foto hd • auto no watermark</div>
+<div class="sub">PASTE LINK • AUTO PREVIEW • DOWNLOAD</div>
+<div class="box"><input id="q" placeholder="paste link tiktok / ig / yt / spotify..."><button onclick="handle()">DOWNLOAD</button></div>
+<div id="status">auto detect spotify • tiktok foto video • ig reels post • yt • hd no wm</div>
 <div class="results" id="results"></div>
-<div class="player" id="player"><div id="pinfo" style="font-size:11px;letter-spacing:.5px;opacity:.7;margin-bottom:8px;font-weight:300"></div><audio id="audio" controls style="width:100%;height:36px"></audio></div>
-<div class="footer">© 2026 Lèxaa Download • Angelic Edition • background same as spotify<br>mp4 mp3 jpg auto • hd no watermark • permanent</div>
+<div class="footer">mp4 = mp4 • mp3 = mp3 • foto = foto hd • auto preview + download<br>© 2026 Lexa Download</div>
 <script>
 const statusEl=document.getElementById('status');
 const resultsEl=document.getElementById('results');
+const inputEl=document.getElementById('q');
+function extractUrl(t){const m=t.match(/https?:\/\/[^\s]+/i);return m?m[0].replace(/[.,;!\)]+$/,''):t.trim();}
 function detect(u){u=u.toLowerCase();if(u.includes('tiktok'))return 'tiktok';if(u.includes('instagram'))return 'ig';if(u.includes('youtube')||u.includes('youtu.be'))return 'yt';if(u.includes('spotify'))return 'spotify';return 'search';}
+inputEl.addEventListener('paste',()=>{setTimeout(()=>{const c=extractUrl(inputEl.value);if(c.includes('http')){inputEl.value=c;handle();}},150);});
+inputEl.addEventListener('keydown',e=>{if(e.key==='Enter')handle();});
+window.addEventListener('load',()=>{const p=new URLSearchParams(location.search);const u=p.get('url')||p.get('link');if(u){inputEl.value=u;handle();}});
 async function handle(){
- const q=document.getElementById('q').value.trim();if(!q)return;
- const t=detect(q);
- if(t==='search')searchSpotify(q);
- else if(t==='tiktok')dlTikTok(q);
- else if(t==='ig')dlUniversal(q,'ig reels/post hd');
- else if(t==='yt')dlUniversal(q,'youtube hd');
- else if(t==='spotify')searchSpotify(q);
- else dlUniversal(q,'hd');
-}
-async function searchSpotify(q){
- statusEl.innerText='searching spotify • mp3 hd...';resultsEl.innerHTML='';
- try{
-  let r=await fetch('https://api.spotifydown.com/search/'+encodeURIComponent(q));let j=await r.json();
-  if(j.success&&j.trackList.length){
-   statusEl.innerText=j.trackList.length+' results • mp3 320k hd';
-   resultsEl.innerHTML=j.trackList.map(t=>`
-    <div class="card"><img src="${t.cover}"><div style="flex:1;min-width:0"><b>${t.title}</b><small>${t.artists} • mp3 320kbps • hd</small>
-    <div class="btns"><button class="btn" onclick="window.open('https://open.spotify.com/track/${t.id}','_blank')">preview</button><button class="btn btn2" onclick="dlSpotify('${t.id}','${t.title.replace(/'/g,'')}')">download mp3 hd</button></div></div></div>`).join('');return;
-  }
- }catch(e){}
- try{
-  let r2=await fetch('https://itunes.apple.com/search?term='+encodeURIComponent(q)+'&media=music&limit=12');let j2=await r2.json();
-  if(j2.results.length){
-   statusEl.innerText=j2.results.length+' results';
-   resultsEl.innerHTML=j2.results.map(t=>`
-    <div class="card"><img src="${t.artworkUrl100.replace('100x100','500x500')}"><div style="flex:1"><b>${t.trackName}</b><small>${t.artistName} • mp3 hd</small>
-    <div class="btns"><button class="btn" onclick="playUrl('${t.previewUrl}','${t.trackName}')">preview</button><button class="btn btn2" onclick="dlUniversal('https://www.youtube.com/results?search_query=${encodeURIComponent(t.artistName+' '+t.trackName)}','yt')">full yt hd</button></div></div></div>`).join('');return;
-  }
- }catch(e){}statusEl.innerText='no results';
-}
-async function dlSpotify(id,title){
- statusEl.innerText='preparing '+title.toLowerCase()+' • mp3 hd';
- try{let r=await fetch('https://api.spotifydown.com/download/'+id);let j=await r.json();if(j.success&&j.link){downloadFile(j.link,title+'.mp3');statusEl.innerText='downloaded • mp3 hd • '+title;return;}}catch(e){}window.open('https://spotifydown.com/'+id,'_blank');
+ let raw=inputEl.value.trim();if(!raw)return;
+ let url=extractUrl(raw);inputEl.value=url;
+ if(!url.includes('http')){searchSpotify(url);return;}
+ const type=detect(url);
+ statusEl.innerText=type+' • fetching preview hd...';
+ resultsEl.innerHTML='<div style="text-align:center;padding:20px;opacity:.5;font-size:11px;letter-spacing:2px">LOADING PREVIEW...</div>';
+ if(type==='tiktok') dlTikTok(url);
+ else if(type==='ig') dlIG(url);
+ else if(type==='yt') dlYT(url);
+ else if(type==='spotify') dlSpotifyLink(url);
 }
 async function dlTikTok(url){
- statusEl.innerText='tiktok • hd no wm...';resultsEl.innerHTML='<div class="card"><div style="flex:1"><b>Processing TikTok HD No WM...</b><small>video / foto slide auto detect • mp4 mp3 jpg</small></div></div>';
  try{
-  let r=await fetch('https://www.tikwm.com/api/?url='+encodeURIComponent(url)+'&hd=1');let j=await r.json();
+  const r=await fetch('https://www.tikwm.com/api/?url='+encodeURIComponent(url)+'&hd=1');
+  const j=await r.json();
   if(j.data){
-   let d=j.data;
+   const d=j.data;
    if(d.images&&d.images.length){
-    statusEl.innerText=`tiktok foto • ${d.images.length} foto hd no wm`;
-    resultsEl.innerHTML=d.images.map((img,i)=>`
-     <div class="card"><img src="${img}"><div style="flex:1"><b>Foto ${i+1} • JPG HD No WM</b><small>@${d.author?.unique_id||'tiktok'} • foto = foto hd</small>
-     <div class="btns"><button class="btn btn2" onclick="downloadFile('${img}','tiktok_foto_${i+1}_hd.jpg')">download jpg hd</button></div></div></div>`).join('')+
-     `<div class="card"><div style="flex:1"><b>Music • MP3 Original</b><small>mp3 = mp3 • hd audio</small><div class="btns"><button class="btn btn2" onclick="downloadFile('${d.music}','tiktok_music_hd.mp3')">download mp3</button></div></div></div>`;
-   }else{
-    statusEl.innerText='tiktok video • mp4 hd no watermark • mp4=mp4';
+    statusEl.innerText=`tiktok foto • ${d.images.length} foto hd • preview done`;
     resultsEl.innerHTML=`
-     <div class="card"><img src="${d.cover}"><div style="flex:1"><b>${d.title||'TikTok Video'} • HD No WM</b><small>@${d.author?.unique_id} • mp4 hd no wm</small>
-     <div class="btns">
-     <button class="btn btn2" onclick="downloadFile('${d.play}','tiktok_hd_no_wm.mp4')">download mp4 hd no wm</button>
-     <button class="btn" onclick="downloadFile('${d.hdplay||d.play}','tiktok_1080p.mp4')">1080p hd</button>
-     <button class="btn" onclick="downloadFile('${d.music}','tiktok_audio_hd.mp3')">mp3 audio</button>
-     </div></div></div>`;
+     <div class="preview">
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:2px"><img class="thumb" src="${d.images[0]}" style="height:320px;grid-column:span 2"><img class="thumb" src="${d.images[1]||d.images[0]}" style="height:180px"><img class="thumb" src="${d.images[2]||d.images[0]}" style="height:180px"></div>
+      <div class="info"><span class="platform">TIKTOK FOTO • ${d.images.length} SLIDE • HD NO WM</span><b>${d.title||'TikTok Photo'}</b><small>@${d.author?.unique_id} • preview foto slide hd</small>
+       <button class="btn-dl" onclick="downloadFile('${d.images[0]}','tiktok_foto_1_hd.jpg')">DOWNLOAD FOTO 1 HD</button>
+       <div class="btn-row">${d.images.map((img,i)=>`<button class="btn" onclick="downloadFile('${img}','foto_${i+1}.jpg')">Foto ${i+1}</button>`).join('')}</div>
+       <button class="btn-dl" style="background:transparent;border:1px solid #8ecfff;color:#8ecfff;margin-top:10px" onclick="downloadFile('${d.music}','music.mp3')">DOWNLOAD MUSIC MP3</button>
+      </div>
+     </div>`;
+   }else{
+    statusEl.innerText='tiktok video • hd no wm • preview done';
+    resultsEl.innerHTML=`
+     <div class="preview">
+      <video src="${d.play}" poster="${d.cover}" controls playsinline></video>
+      <div class="info"><span class="platform">TIKTOK VIDEO • HD NO WATERMARK</span><b>${d.title||'TikTok Video'}</b><small>@${d.author?.unique_id} • ${d.duration}s • mp4 = mp4 hd</small>
+       <button class="btn-dl" onclick="downloadFile('${d.play}','tiktok_hd_no_wm.mp4')">DOWNLOAD MP4 HD NO WM</button>
+       <div class="btn-row"><button class="btn" onclick="downloadFile('${d.hdplay||d.play}','1080p.mp4')">1080P</button><button class="btn" onclick="downloadFile('${d.music}','audio.mp3')">MP3 AUDIO</button></div>
+      </div>
+     </div>`;
    }return;
   }
- }catch(e){}dlUniversal(url,'tiktok hd');
+ }catch(e){}
+ statusEl.innerText='tiktok • trying backup...';
 }
-async function dlUniversal(url,label){
- statusEl.innerText=(label||'hd')+' • processing hd no wm...';
+async function dlIG(url){
  try{
-  let res=await fetch('https://api.cobalt.tools/api/json',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url:url,vQuality:'1080',aFormat:'mp3',isAudioOnly:false})});
-  let data=await res.json();
+  const res=await fetch('https://api.cobalt.tools/api/json',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url:url,vQuality:'1080'})});
+  const data=await res.json();
   if(data.url){
-   let ext=data.url.includes('.mp3')?'mp3':'mp4';
-   statusEl.innerText=`ready • ${ext} hd no wm • ${data.filename||''} • ${ext}=${ext}`;
+   const isV=data.picker?false:!data.url.match(/\.jpg|\.webp/);
+   statusEl.innerText='ig • hd preview done';
    resultsEl.innerHTML=`
-    <div class="card"><img src="https://www.google.com/s2/favicons?domain=${new URL(url).hostname}"><div style="flex:1"><b>${data.filename||'Download HD'} • No WM • ${ext.toUpperCase()}</b><small>original • ${ext} hd • ${ext} = ${ext} • hd no wm</small>
-    <div class="btns">
-    <button class="btn btn2" onclick="downloadFile('${data.url}','${(data.filename||'download')}.${ext}')">download ${ext} hd no wm</button>
-    <button class="btn" onclick="window.open('${data.url}','_blank')">open direct</button>
-    ${ext==='mp4'?`<button class="btn" onclick="dlAudio('${url}')">get mp3</button>`:''}
-    </div></div></div>`;return;
+    <div class="preview">${data.url.match(/\.mp4/)?`<video src="${data.url}" controls playsinline></video>`:`<img class="thumb" src="${data.url}">`}
+     <div class="info"><span class="platform">INSTAGRAM • ${isV?'REELS':'POST'} • HD</span><b>${data.filename||'IG HD'}</b><small>mp4=mp4 foto=foto hd • no wm</small>
+      <button class="btn-dl" onclick="downloadFile('${data.url}','ig_hd.${data.url.includes('.mp4')?'mp4':'jpg'}')">DOWNLOAD ${data.url.includes('.mp4')?'MP4':'JPG'} HD NO WM</button>
+     </div>
+    </div>`;return;
   }
   if(data.picker){
-   statusEl.innerText=`found ${data.picker.length} files • hd • mp4 mp3 jpg auto`;
-   resultsEl.innerHTML=data.picker.map((p,i)=>`
-    <div class="card"><img src="${p.thumb||''}"><div style="flex:1"><b>File ${i+1} • ${p.ext?.toUpperCase()} • HD</b><small>no wm • ${p.ext} = ${p.ext}</small>
-    <div class="btns"><button class="btn btn2" onclick="downloadFile('${p.url}','hd_${i+1}.${p.ext||'mp4'}')">download ${p.ext?.toUpperCase()||'FILE'} hd</button></div></div></div>`).join('');return;
+   statusEl.innerText=`ig carousel • ${data.picker.length} files • preview`;
+   resultsEl.innerHTML=`<div class="preview"><div class="info"><span class="platform">IG CAROUSEL • ${data.picker.length} FILES • HD</span><b>Carousel HD</b></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:2px">${data.picker.map(p=>p.type==='video'?`<video src="${p.url}" style="height:200px" muted></video>`:`<img src="${p.url}" style="height:200px;object-fit:cover">`).join('')}</div><div class="info"><button class="btn-dl" onclick="downloadFile('${data.picker[0].url}','ig_1_hd.${data.picker[0].ext||'mp4'}')">DOWNLOAD FILE 1 HD NO WM</button><div class="btn-row">${data.picker.map((p,i)=>`<button class="btn" onclick="downloadFile('${p.url}','ig_${i+1}.${p.ext}')">File ${i+1}</button>`).join('')}</div></div></div>`;return;
   }
  }catch(e){}
- statusEl.innerText='backup downloader • hd';
- resultsEl.innerHTML=`
-  <div class="card"><div style="flex:1"><b>Backup HD No WM</b><small>mp4 mp3 jpg auto • hd</small>
-  <div class="btns">
-  <button class="btn btn2" onclick="window.open('https://ssstik.io/en?url=${encodeURIComponent(url)}','_blank')">tiktok hd no wm</button>
-  <button class="btn btn2" onclick="window.open('https://snapinsta.app/?url=${encodeURIComponent(url)}','_blank')">ig reels/post hd</button>
-  <button class="btn btn2" onclick="window.open('https://cobalt.tools/?url=${encodeURIComponent(url)}','_blank')">yt hd no wm</button>
-  </div></div></div>`;
 }
-async function dlAudio(url){try{let r=await fetch('https://api.cobalt.tools/api/json',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url:url,isAudioOnly:true,aFormat:'mp3'})});let d=await r.json();if(d.url)downloadFile(d.url,'audio_hd.mp3');}catch(e){}}
-function downloadFile(url,name){const a=document.createElement('a');a.href=url;a.download=name;a.target='_blank';document.body.appendChild(a);a.click();a.remove();statusEl.innerText='downloaded • '+name+' • hd no wm • '+name.split('.').pop()+' = '+name.split('.').pop();}
-function playUrl(url,title){const audio=document.getElementById('audio');const player=document.getElementById('player');document.getElementById('pinfo').innerText=title.toLowerCase();audio.src=url;player.style.display='block';audio.play();}
-document.getElementById('q').addEventListener('keydown',e=>{if(e.key==='Enter')handle();});
+async function dlYT(url){
+ try{
+  const res=await fetch('https://api.cobalt.tools/api/json',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url:url,vQuality:'1080'})});
+  const data=await res.json();
+  if(data.url){
+   statusEl.innerText='youtube • mp4 hd • preview done';
+   resultsEl.innerHTML=`
+    <div class="preview"><div class="info"><span class="platform">YOUTUBE • MP4 1080P • HD</span><b>${data.filename||'YouTube'}</b><small>mp4 = mp4 hd 1080p • no wm</small>
+     <button class="btn-dl" onclick="downloadFile('${data.url}','yt_hd.mp4')">DOWNLOAD MP4 HD 1080P</button>
+     <div class="btn-row"><button class="btn" onclick="dlYTAudio('${url}')">Get MP3 320K</button><button class="btn" onclick="window.open('${data.url}','_blank')">Open Direct</button></div>
+    </div></div>`;return;
+  }
+ }catch(e){}
+}
+async function dlSpotifyLink(url){const id=url.split('/track/')[1]?.split('?')[0]||url.split('/').pop();searchSpotify(id);}
+async function searchSpotify(q){
+ statusEl.innerText='spotify • searching...';
+ try{
+  const r=await fetch('https://api.spotifydown.com/search/'+encodeURIComponent(q));
+  const j=await r.json();
+  if(j.success&&j.trackList.length){
+   statusEl.innerText=j.trackList.length+' results • preview + download';
+   resultsEl.innerHTML=j.trackList.map(t=>`
+    <div style="background:rgba(18,22,36,.7);border-radius:16px;padding:14px;display:flex;gap:12px;margin-bottom:10px"><img src="${t.cover}" style="width:60px;height:60px;border-radius:10px"><div style="flex:1"><b style="font-size:13px">${t.title}</b><small style="opacity:.5;font-size:11px;display:block">${t.artists}</small><button class="btn-dl" style="padding:8px 14px;font-size:10px;margin-top:8px" onclick="dlSpotifyId('${t.id}')">PREVIEW + DOWNLOAD MP3 HD</button></div></div>`).join('');return;
+  }
+ }catch(e){}
+}
+async function dlSpotifyId(id){
+ try{
+  const r=await fetch('https://api.spotifydown.com/download/'+id);const j=await r.json();
+  if(j.success){
+   resultsEl.innerHTML=`
+    <div class="preview"><img class="thumb" src="${j.metadata?.cover}" style="max-height:300px"><div class="info"><span class="platform">SPOTIFY • MP3 320K HD</span><b>${j.metadata?.title}</b><small>${j.metadata?.artists} • mp3 = mp3 • 320kbps</small><button class="btn-dl" onclick="downloadFile('${j.link}','${j.metadata?.title}.mp3')">DOWNLOAD MP3 HD 320K</button></div></div>`;
+   statusEl.innerText='spotify • mp3 hd ready • preview + download';return;
+  }
+ }catch(e){}
+}
+function downloadFile(u,n){const a=document.createElement('a');a.href=u;a.download=n;a.target='_blank';document.body.appendChild(a);a.click();a.remove();statusEl.innerText='downloaded • '+n;}
+async function dlYTAudio(u){try{const r=await fetch('https://api.cobalt.tools/api/json',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url:u,isAudioOnly:true,aFormat:'mp3'})});const d=await r.json();if(d.url)downloadFile(d.url,'yt_audio_hd.mp3');}catch(e){}}
 </script>
 </body>
 </html>
