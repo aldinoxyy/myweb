@@ -1,22 +1,23 @@
-<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>LèxaaDev - Admin Panel</title>
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>LèxaaDev</title>
 <style>body{background:#0a0a0a;color:#fff;font-family:sans-serif;padding:15px}.card{background:#1a1a1a;border:1px solid #333;padding:12px;border-radius:10px;margin-bottom:10px} input,button,select{padding:8px;border-radius:6px;border:none;margin:3px} button{background:#fff;color:#000;font-weight:bold;cursor:pointer}.green{color:#0f0}.red{color:#f00}.yellow{color:#ff0}</style>
 </head><body>
-<h2>👑 LèxaaDev</h2><p>Admin Panel - Full Control</p>
-<div class="card"><h3>Buat Akun Buyer LèxaaBot</h3><input id="u" placeholder="username"><input id="p" placeholder="password"><select id="exp"><option value="7">7 Hari</option><option value="30">30 Hari</option><option value="unlimited">Unlimited</option></select><button onclick="create()">Buat Akun</button></div>
+<h2>👑 LèxaaDev</h2>
+<div class="card"><h3>Buat Akun LèxaaBot</h3><input id="u" placeholder="username"><input id="p" placeholder="password"><select id="exp"><option value="7">7 Hari</option><option value="30">30 Hari</option><option value="unlimited">Unlimited</option></select><button onclick="create()">Buat</button></div>
 <div class="card"><h3>List Akun LèxaaBot</h3><div id="listUser"></div></div>
-<div class="card"><h3>Antrian Buyer LèxaaBot (Minta Kode)</h3><div id="listReq"></div></div>
+<div class="card"><h3>Antrian LèxaaBot</h3><div id="listReq"></div></div>
 <script>
-async function api(url,opt){ const r=await fetch(url,opt); return r.json(); }
+const API = 'https://midnight-margaret-planners-copied.trycloudflare.com';
+async function api(url,opt){ const r=await fetch(API+url,opt); return r.json(); }
 async function loadUsers(){ const d=await api('/api/users'); document.getElementById('listUser').innerHTML=d.map(x=>`${x.username} | ${x.isUnlimited?'Unlimited ♾️':x.expiredAt} <button onclick="del('${x.username}')">Hapus</button>`).join('<br>'); }
-async function create(){ const username=document.getElementById('u').value; const password=document.getElementById('p').value; const exp=document.getElementById('exp').value; const isUnlimited=exp=='unlimited'; const expiredDays=isUnlimited?0:exp; const r=await api('/api/create',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,password,expiredDays,isUnlimited})}); alert(r.ok?'Berhasil bikin akun LèxaaBot':'Gagal: '+r.msg); loadUsers(); }
+async function create(){ const username=document.getElementById('u').value; const password=document.getElementById('p').value; const exp=document.getElementById('exp').value; const isUnlimited=exp=='unlimited'; const expiredDays=isUnlimited?0:exp; const r=await api('/api/create',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,password,expiredDays,isUnlimited})}); alert(r.ok?'Berhasil':'Gagal'); loadUsers(); }
 async function del(username){ await api('/api/delete',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username})}); loadUsers(); }
 async function loadReq(){ const d=await api('/api/admin/requests'); document.getElementById('listReq').innerHTML=d.map(x=>`
 <div class="card">
 <b>${x.service.toUpperCase()}</b> - ${x.username} - ${x.phone}<br>
-Status: <span class="${x.status=='connected'?'green':x.status=='failed'?'red':'yellow'}">${x.status}</span><br>
-${x.status=='waiting'?`Buyer LèxaaBot minta kode buat: <b>${x.service}</b><br><input id="code-${x.id}" placeholder="Kode 8 digit dari Termux"><button onclick="sendCode('${x.id}')">Kirim ke LèxaaBot</button>`:''}
-${x.status=='code_sent'?`Kode terkirim ke LèxaaBot: <b>${x.code}</b><br><button onclick="setStatus('${x.id}','connected')">✅ Connect</button> <button onclick="setStatus('${x.id}','failed')">❌ Gagal</button>`:''}
-${x.status=='connected'?`✅ LèxaaBot ${x.service} Connect by LèxaaMj`:''}
+Status: ${x.status}<br>
+${x.status=='waiting'?`Minta kode: <b>${x.service}</b><br><input id="code-${x.id}" placeholder="8 digit"><button onclick="sendCode('${x.id}')">Kirim</button>`:''}
+${x.status=='code_sent'?`Kode: <b>${x.code}</b><br><button onclick="setStatus('${x.id}','connected')">✅ Connect</button> <button onclick="setStatus('${x.id}','failed')">❌ Gagal</button>`:''}
+${x.status=='connected'?`✅ Connect by LèxaaMj`:''}
 </div>`).join(''); }
 async function sendCode(id){ const code=document.getElementById('code-'+id).value; await api('/api/admin/send-code',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,code})}); loadReq(); }
 async function setStatus(id,status){ await api('/api/admin/set-status',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,status})}); loadReq(); }

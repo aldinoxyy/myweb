@@ -1,9 +1,8 @@
-<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>LèxaaBot - Buyer Panel</title>
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>LèxaaBot</title>
 <style>body{background:#000;color:#fff;font-family:sans-serif;padding:20px;text-align:center}.btn{background:#111;border:1px solid #333;padding:15px;border-radius:12px;margin:10px;display:block;width:90%;color:#fff;font-weight:bold}.card{background:#111;padding:15px;border-radius:12px;margin-top:20px;border:1px solid #222} input{padding:10px;border-radius:8px;width:80%;margin:5px}</style>
 </head><body>
 <h2>🤖 LèxaaBot</h2>
-<p>Panel Buyer - Bot Jaga, Bug, Pushkon, Spotify</p>
-<div id="login"><input id="lu" placeholder="Username"><input id="lp" type="password" placeholder="Password"><button onclick="login()" class="btn">Login LèxaaBot</button></div>
+<div id="login"><input id="lu" placeholder="Username"><input id="lp" type="password" placeholder="Password"><button onclick="login()" class="btn">Login</button></div>
 <div id="main" style="display:none">
 <p id="welcome"></p>
 <input id="phone" placeholder="Nomor WA 62xxxx">
@@ -11,13 +10,14 @@
 <button class="btn" onclick="req('bug wa')">BOT BUG WA</button>
 <button class="btn" onclick="req('pushkon')">BOT PUSHKON</button>
 <button class="btn" onclick="req('spotify')">BOT SPOTIFY</button>
-<div id="status" class="card"></div>
+<div id="status" class="card">Belum ada request</div>
 </div>
 <script>
+const API = 'https://midnight-margaret-planners-copied.trycloudflare.com';
 let myUser=null;
-async function api(u,o){ const r=await fetch(u,o); return r.json(); }
-async function login(){ const username=document.getElementById('lu').value; const password=document.getElementById('lp').value; const d=await api('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,password})}); if(!d.ok) return alert(d.msg); myUser=d.user; document.getElementById('login').style.display='none'; document.getElementById('main').style.display='block'; document.getElementById('welcome').innerText='Hai '+myUser.username+' - LèxaaBot'; check(); }
-async function req(service){ const phone=document.getElementById('phone').value; if(!phone) return alert('Isi nomor dulu Bos'); const d=await api('/api/request',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:myUser.username,service,phone})}); document.getElementById('status').innerHTML='Wait to connection...'; check(); }
-async function check(){ if(!myUser) return; const d=await api('/api/status?username='+myUser.username); const s=document.getElementById('status'); if(d.status=='none') s.innerHTML='Belum ada request'; else if(d.status=='waiting') s.innerHTML=`Wait to connection...<br>Service: ${d.service}<br>Menunggu LèxaaDev...`; else if(d.status=='code_sent') s.innerHTML=`Kode lu: <h1>${d.code}</h1>Kode expired dalam 5 menit<br>Service: ${d.service}`; else if(d.status=='connected') s.innerHTML=`✅ Bot ${d.service} Connect by LèxaaMj`; else if(d.status=='failed') s.innerHTML=`❌ Gagal connect`; else if(d.status=='expired') s.innerHTML=`❌ Kode expired`; }
+async function api(u,o){ const r=await fetch(API+u,o); return r.json(); }
+async function login(){ const username=document.getElementById('lu').value; const password=document.getElementById('lp').value; const d=await api('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,password})}); if(!d.ok) return alert(d.msg); myUser=d.user; document.getElementById('login').style.display='none'; document.getElementById('main').style.display='block'; document.getElementById('welcome').innerText='Hai '+myUser.username; check(); }
+async function req(service){ const phone=document.getElementById('phone').value; if(!phone) return alert('Isi nomor dulu'); await api('/api/request',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:myUser.username,service,phone})}); document.getElementById('status').innerHTML='Wait to connection... (auto close 30 menit)'; }
+async function check(){ if(!myUser) return; const d=await api('/api/status?username='+myUser.username); const s=document.getElementById('status'); if(!d || d.status=='none') return; if(d.status=='waiting') s.innerHTML=`Wait to connection...<br>${d.service} - ${d.phone}<br><small>Menunggu LèxaaDev, auto close 30 menit</small>`; else if(d.status=='code_sent') s.innerHTML=`Kode: <h1>${d.code}</h1>Expired 5 menit<br>${d.service}`; else if(d.status=='connected') s.innerHTML=`✅ Bot ${d.service} Connect by LèxaaMj`; else if(d.status=='failed') s.innerHTML=`❌ Connection Gagal - Connect Again<br><small>${d.reason||'Admin tidak menjawab 30 menit'}</small><br><button class="btn" onclick="location.reload()">Connect Again</button>`; else if(d.status=='expired') s.innerHTML=`❌ Kode Expired<br><button class="btn" onclick="location.reload()">Connect Again</button>`; }
 setInterval(check,3000);
 </script></body></html>
