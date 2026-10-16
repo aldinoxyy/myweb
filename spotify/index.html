@@ -1,85 +1,82 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Spotify LèxaaMj - FIX NO YT</title>
+<title>Spotify LèxaaMj</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
-body{background:#080a10;color:#fff;min-height:100vh;padding:20px}
-.header{text-align:center;padding:30px 0}
-.card{background:rgba(20,24,35,0.9);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:12px;display:flex;gap:12px;align-items:center;margin:10px auto;max-width:600px;position:relative;overflow:hidden}
-.card img{width:56px;height:56px;border-radius:8px;z-index:2}
-.info{flex:1;z-index:2}
-.info b{display:block;font-size:14px}
-.info span{font-size:12px;color:#888}
-.btn{padding:6px 14px;border-radius:20px;border:1px solid rgba(255,255,255,0.2);background:transparent;color:#aaa;font-size:10px;cursor:pointer;margin-right:5px}
-.btn.full{background:rgba(169,196,255,0.15);color:#a9c4ff;border-color:#a9c4ff}
-.progress{position:absolute;left:0;top:0;bottom:0;background:rgba(169,196,255,0.15);width:0%;z-index:1;transition:width 0.3s}
-.pt{position:absolute;right:10px;top:10px;color:#a9c4ff;font-size:10px;z-index:3}
-input{width:100%;max-width:600px;display:block;margin:20px auto;padding:14px 20px;border-radius:30px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);color:#fff}
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;display:flex;flex-direction:column;background:#05070d;color:#e8e8e8;font-family:'Inter',system-ui;background-image:linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.9)),url('bg.jpg');background-size:cover;background-position:center;background-attachment:fixed}
+.h{padding:16px 20px;display:flex;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.06);backdrop-filter:blur(10px)}
+.logo{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:24px;letter-spacing:.5px} .logo span{color:#8ecfff;font-weight:400}
+.t{margin-top:30px;text-align:center;font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:600;letter-spacing:-.5px} .t span{color:#8ecfff;font-weight:400}
+.sub{text-align:center;opacity:.35;letter-spacing:5px;font-size:10px;margin-top:6px;font-weight:300}
+.box{margin:26px auto;max-width:520px;width:90%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:28px;display:flex;align-items:center;padding:0 18px;backdrop-filter:blur(14px)}
+.box input{flex:1;background:transparent;border:none;outline:none;color:#fff;padding:16px 10px;font-size:14px;font-weight:300;letter-spacing:.3px;font-family:'Inter'}
+#status{text-align:center;margin-top:18px;font-size:11px;letter-spacing:2.5px;font-weight:300;text-transform:uppercase;opacity:.6}
+.results{max-width:580px;margin:16px auto;padding:0 14px;flex:1;width:100%}
+.card{background:rgba(18,22,36,.62);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:14px;display:flex;gap:14px;margin-bottom:10px;backdrop-filter:blur(10px)}
+.card img{width:62px;height:62px;border-radius:10px;object-fit:cover;opacity:.9}
+.card b{font-size:13.5px;font-weight:500;letter-spacing:.2px;display:block;font-family:'Inter'} 
+.card small{opacity:.45;font-size:11.5px;font-weight:300;letter-spacing:.3px}
+.btns{margin-top:10px;display:flex;gap:8px}
+.btn{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.18);padding:6px 16px;border-radius:20px;font-weight:400;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:'Inter';transition:.2s}
+.btn:hover{border-color:#fff;background:rgba(255,255,255,.08)}
+.btn2{border-color:rgba(142,207,255,.4);color:#8ecfff}
+.btn2:hover{background:rgba(142,207,255,.1);border-color:#8ecfff}
+.player{position:fixed;bottom:0;left:0;width:100%;background:rgba(10,14,25,.94);backdrop-filter:blur(16px);padding:12px 16px;display:none;border-top:1px solid rgba(255,255,255,.06)}
+.footer{margin-top:auto;text-align:center;padding:38px 0 20px;opacity:.35;font-size:10px;letter-spacing:1.5px;font-weight:300;line-height:1.8;font-family:'Inter'}
+a{color:#8ecfff;text-decoration:none}
 </style>
 </head>
 <body>
-<div class="header"><h2>Spotify LèxaaMj FIXED</h2><p style="font-size:11px;color:#666;letter-spacing:3px">FULL = DIRECT DOWNLOAD MP3 NO YT</p></div>
-<input id="q" placeholder="Search alkateri..." value="alkateri" onkeydown="if(event.key==='Enter')doSearch()">
-<div id="list"></div>
-<script>
-const list=document.getElementById('list');
-function render(){
-  list.innerHTML=`
-    <div class="card" id="c0"><div class="progress" id="p0"></div><div class="pt" id="pt0"></div><img src="https://i.scdn.co/image/ab67616d0000b273c5649add07ed3720be9d5526"><div class="info"><b>Alkateri - Penetrasi</b><span>Alkateri</span><div style="margin-top:6px"><button class="btn">PREVIEW</button><button class="btn full" id="b0" onclick="dl(this,0,'Alkateri - Penetrasi','Alkateri')">FULL</button></div></div></div>
-    <div class="card" id="c1"><div class="progress" id="p1"></div><div class="pt" id="pt1"></div><img src="https://i.scdn.co/image/ab67616d0000b273c5649add07ed3720be9d5526"><div class="info"><b>Alkateri - Forgotten</b><span>Alkateri</span><div style="margin-top:6px"><button class="btn">PREVIEW</button><button class="btn full" id="b1" onclick="dl(this,1,'Alkateri - Forgotten','Alkateri')">FULL</button></div></div></div>
-  `;
-}
-async function dl(btn,idx,title,artist){
-  const prog=document.getElementById('p'+idx);
-  const pt=document.getElementById('pt'+idx);
-  const fileName=title+'.mp3';
-  btn.disabled=true;
-  btn.innerText='GETTING LINK...';
-  prog.style.width='30%';
-  
-  // LINK MP3 LANGSUNG - TIDAK KE YT!
-  // Pake MP3 sample yang pasti work (nanti ganti API)
-  let url='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
-  
-  // Coba ambil link real dari API
-  try{
-    const res=await fetch(`https://api.fabdl.com/spotify/get?url=https://open.spotify.com/track/5ghIJDpPoe3CfHMGu71E6T`);
-    const data=await res.json();
-    if(data.result && data.result.dlMp3) url=data.result.dlMp3;
-  }catch(e){}
+<div class="h"><div><div class="logo"><span>Spotify</span> LèxaaMj</div><div style="opacity:.4;font-size:9px;letter-spacing:3px;font-family:'Inter';font-weight:300;margin-top:2px">ANGELIC EDITION</div></div><div style="opacity:.35;font-size:9px;letter-spacing:2px;font-family:'Inter';font-weight:300">PERMANENT</div></div>
+<div class="t">Spotify <span>LèxaaMj</span></div>
+<div class="sub">SEARCH • PLAY • DOWNLOAD</div>
+<div class="box"><input id="q" placeholder="search — gata only, komang, dj..." onkeydown="if(event.key==='Enter')search()"></div>
+<div id="status"></div>
+<div class="results" id="results"></div>
+<div class="player" id="player"><div id="pinfo" style="font-size:11px;letter-spacing:.5px;opacity:.7;margin-bottom:8px;font-weight:300"></div><audio id="audio" controls style="width:100%;height:36px"></audio></div>
+<div class="footer">© 2026 Spotify LèxaaMj • Angelic Edition<br>instagram @alaaxaa_ • wa 085642367261<br>permanent • no server • fast</div>
 
-  btn.innerText='DOWNLOADING 0%';
-  const xhr=new XMLHttpRequest();
-  xhr.open('GET',url,true);
-  xhr.responseType='blob';
-  xhr.onprogress=(e)=>{
-    if(e.lengthComputable){
-      const pct=Math.round((e.loaded/e.total)*100);
-      prog.style.width=pct+'%';
-      pt.innerText=pct+'%';
-      btn.innerText='DOWNLOADING '+pct+'%';
+<script>
+const statusEl=document.getElementById('status');
+const resultsEl=document.getElementById('results');
+const audio=document.getElementById('audio');
+const player=document.getElementById('player');
+const pinfo=document.getElementById('pinfo');
+async function search(){
+  const q=document.getElementById('q').value.trim(); if(!q) return;
+  statusEl.innerText='searching'; resultsEl.innerHTML='';
+  try{
+    let r=await fetch('https://api.spotifydown.com/search/'+encodeURIComponent(q));
+    let j=await r.json();
+    if(j.success && j.trackList.length){
+      statusEl.innerText=j.trackList.length+' results';
+      resultsEl.innerHTML=j.trackList.map(t=>`
+        <div class="card"><img src="${t.cover}"><div style="flex:1;min-width:0"><b>${t.title}</b><small>${t.artists}</small><div class="btns"><button class="btn" onclick="window.open('https://open.spotify.com/track/${t.id}','_blank')">preview</button><button class="btn btn2" onclick="downloadFull('${t.id}','${t.title.replace(/'/g,'')}')">full</button></div></div></div>`).join(''); return;
     }
-  };
-  xhr.onload=()=>{
-    const blob=xhr.response;
-    const blobUrl=URL.createObjectURL(blob);
-    const a=document.createElement('a');
-    a.href=blobUrl;
-    a.download=fileName;
-    document.body.appendChild(a);
-    a.click();
-    prog.style.width='100%';
-    pt.innerText='100%';
-    btn.innerText='DONE ✓';
-    setTimeout(()=>{URL.revokeObjectURL(blobUrl);a.remove();btn.innerText='FULL';btn.disabled=false;prog.style.width='0%';pt.innerText='';},2000);
-  };
-  xhr.send();
+  }catch(e){}
+  try{
+    let r2=await fetch('https://itunes.apple.com/search?term='+encodeURIComponent(q)+'&media=music&limit=20');
+    let j2=await r2.json();
+    if(j2.results.length){
+      statusEl.innerText=j2.results.length+' results';
+      resultsEl.innerHTML=j2.results.map(t=>`
+        <div class="card"><img src="${t.artworkUrl100.replace('100x100','500x500')}"><div style="flex:1"><b>${t.trackName}</b><small>${t.artistName}</small><div class="btns"><button class="btn" onclick="playUrl('${t.previewUrl}','${t.trackName}')">preview</button><button class="btn btn2" onclick="window.open('https://www.youtube.com/results?search_query=${encodeURIComponent(t.artistName+' '+t.trackName)}','_blank')">full</button></div></div></div>`).join(''); return;
+    }
+  }catch(e){}
+  statusEl.innerText='no results';
 }
-render();
-function doSearch(){render();}
+async function downloadFull(id,title){
+  statusEl.innerText='preparing '+title.toLowerCase();
+  try{
+    let r=await fetch('https://api.spotifydown.com/download/'+id); let j=await r.json();
+    if(j.success && j.link){ window.open(j.link,'_blank'); statusEl.innerText='ready'; return; }
+  }catch(e){} statusEl.innerText='open youtube';
+}
+function playUrl(url,title){ pinfo.innerText=title.toLowerCase(); audio.src=url; player.style.display='block'; audio.play(); }
 </script>
 </body>
 </html>
