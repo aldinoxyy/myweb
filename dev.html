@@ -12,10 +12,9 @@ body { background:#000; background-image: radial-gradient(circle at 20% 30%, rgb
 .header .status { color:#0f0; font-size:10px; letter-spacing:1px; background:#0f0f0f; border:1px solid #1a1a1a; padding:6px 12px; border-radius:20px; }
 .container { max-width:900px; margin:auto; padding:15px; display:grid; grid-template-columns: 300px 1fr; gap:14px; }
 @media(max-width:700px){ .container{ grid-template-columns:1fr; } }
-.card { background: rgba(18,18,18,0.9); border:1px solid rgba(255,255,255,0.07); border-radius:20px; padding:18px; backdrop-filter: blur(15px); box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); }
+.card { background: rgba(18,18,18,0.9); border:1px solid rgba(255,255,255,0.07); border-radius:20px; padding:18px; backdrop-filter: blur(15px); }
 .card h3 { font-size:11px; letter-spacing:2px; color:#777; margin-bottom:14px; text-transform:uppercase; }
 input, select { width:100%; padding:12px 14px; border-radius:12px; border:1px solid #222; background:#0a0a0a; color:#fff; outline:none; margin:6px 0; font-size:13px; }
-input:focus, select:focus { border-color:#333; background:#111; }
 .btn { padding:10px 16px; border-radius:10px; border:none; font-weight:700; cursor:pointer; font-size:13px; }
 .btn-white { background:#fff; color:#000; }
 .btn-dark { background:#1a1a1a; color:#fff; border:1px solid #262626; }
@@ -34,12 +33,10 @@ input:focus, select:focus { border-color:#333; background:#111; }
 </style>
 </head>
 <body>
-
 <div class="header">
 <h1>LÈXAA DEV</h1>
 <div class="status">● LOCAL ACTIVE</div>
 </div>
-
 <div class="container">
 <div>
 <div class="card">
@@ -54,90 +51,48 @@ input:focus, select:focus { border-color:#333; background:#111; }
 <div id="users"></div>
 </div>
 </div>
-
 <div>
 <div class="card">
-<h3>Antrian - Auto Close 30 Menit</h3>
+<h3>Antrian</h3>
 <div id="reqs"></div>
 </div>
 </div>
 </div>
-
 <div class="footer">© 2026 LèxaaMj • All Rights Reserved<br><br>Need help? <a href="https://wa.me/6285642367261" target="_blank">Contact Support</a></div>
-
 <script>
 function getUsers(){ return JSON.parse(localStorage.getItem('lex_users')||'[]'); }
 function saveUsers(u){ localStorage.setItem('lex_users', JSON.stringify(u)); }
 function getReqs(){ return JSON.parse(localStorage.getItem('lex_reqs')||'[]'); }
 function saveReqs(r){ localStorage.setItem('lex_reqs', JSON.stringify(r)); }
-
 function createUser(){
  const u=nu.value.trim(), p=np.value.trim(), d=nd.value;
  if(!u||!p) return alert('isi username password');
  const users=getUsers();
  if(users.find(x=>x.username==u)) return alert('username sudah ada');
- let expiredAt = null;
+ let expiredAt=null;
  if(d!='unlimited'){ const t=new Date(); t.setDate(t.getDate()+parseInt(d)); expiredAt=t.toISOString(); }
  users.push({username:u,password:p,expiredAt,isUnlimited:d=='unlimited'});
- saveUsers(users);
- nu.value=''; np.value='';
- render();
+ saveUsers(users); nu.value=''; np.value=''; render();
 }
-
 function render(){
- // USERS
  const users=getUsers();
  document.getElementById('users').innerHTML = users.map(u=>`
-  <div class="req">
-    <div style="display:flex;justify-content:space-between;align-items:center">
-      <div><b style="font-size:13px">${u.username}</b><br><span class="small">${u.isUnlimited?'Unlimited':'Exp: '+new Date(u.expiredAt).toLocaleDateString()}</span></div>
-      <button class="btn btn-dark" onclick="delUser('${u.username}')">Delete</button>
-    </div>
-  </div>
+  <div class="req"><div style="display:flex;justify-content:space-between;align-items:center"><div><b style="font-size:13px">${u.username}</b><br><span class="small">${u.isUnlimited?'Unlimited':'Exp: '+new Date(u.expiredAt).toLocaleDateString()}</span></div><button class="btn btn-dark" onclick="delUser('${u.username}')">Delete</button></div></div>
  `).join('') || '<span class="small">Belum ada user</span>';
 
- // REQS - JANGAN RENDER ULANG KALO LAGI NGETIK KODE
- const activeInput = document.activeElement;
- const isTypingCode = activeInput && activeInput.id && activeInput.id.startsWith('c_');
- const typingId = isTypingCode ? activeInput.id : null;
- const typingValue = isTypingCode ? activeInput.value : '';
-
+ const activeInput=document.activeElement;
+ const isTypingCode=activeInput && activeInput.id && activeInput.id.startsWith('c_');
  if(!isTypingCode){
    const reqs=getReqs().slice().reverse();
    document.getElementById('reqs').innerHTML = reqs.map(r=>{
-     const ago = Math.floor((Date.now()-r.time)/1000);
-     const agoText = ago<60?`${ago}s ago`: `${Math.floor(ago/60)}m ${ago%60}s ago`;
-     return `
-     <div class="req">
-       <div class="req-top">
-         <div><b style="font-size:12px">${r.service.toUpperCase()} | ${r.username}</b><br><span style="font-size:13px">${r.phone}</span><br><span class="small">Status: ${r.status} | ${agoText}</span></div>
-         <span class="badge ${r.status}">${r.status}</span>
-       </div>
-       ${r.status=='waiting'?`
-       <div class="req-code-input">
-         <input id="c_${r.id}" placeholder="Ketik kode..." autocomplete="off">
-         <button class="btn btn-white" onclick="sendCode('${r.id}')">Kirim Kode</button>
-       </div>
-       <div style="margin-top:8px;display:flex;gap:6px">
-         <button class="btn btn-dark" style="font-size:11px" onclick="setStatus('${r.id}','failed')">Reject</button>
-         <button class="btn btn-dark" style="font-size:11px" onclick="delReq('${r.id}')">Hapus</button>
-       </div>
-       `:`
-       <div style="margin-top:10px;display:flex;gap:6px">
-         <button class="btn btn-dark" style="font-size:11px" onclick="setStatus('${r.id}','connected')">Connected</button>
-         <button class="btn btn-dark" style="font-size:11px" onclick="delReq('${r.id}')">Hapus</button>
-       </div>
-       ${r.code?`<div style="margin-top:8px"><span class="small">Code:</span> <b>${r.code}</b></div>`:''}
-       `}
-     </div>
-     `
+     const ago=Math.floor((Date.now()-r.time)/1000);
+     const agoText=ago<60?`${ago}s ago`:`${Math.floor(ago/60)}m ${ago%60}s ago`;
+     return `<div class="req"><div class="req-top"><div><b style="font-size:12px">${r.service.toUpperCase()} | ${r.username}</b><br><span style="font-size:13px">${r.phone}</span><br><span class="small">Status: ${r.status} | ${agoText}</span></div><span class="badge ${r.status}">${r.status}</span></div>
+       ${r.status=='waiting'?`<div class="req-code-input"><input id="c_${r.id}" placeholder="Ketik kode..." autocomplete="off"><button class="btn btn-white" onclick="sendCode('${r.id}')">Kirim Kode</button></div><div style="margin-top:8px;display:flex;gap:6px"><button class="btn btn-dark" style="font-size:11px" onclick="setStatus('${r.id}','failed')">Reject</button><button class="btn btn-dark" style="font-size:11px" onclick="delReq('${r.id}')">Hapus</button></div>`:`
+       <div style="margin-top:10px;display:flex;gap:6px"><button class="btn btn-dark" style="font-size:11px" onclick="setStatus('${r.id}','connected')">Connected</button><button class="btn btn-dark" style="font-size:11px" onclick="delReq('${r.id}')">Hapus</button></div>${r.code?`<div style="margin-top:8px"><span class="small">Code:</span> <b>${r.code}</b></div>`:''}`}</div>`
    }).join('') || '<span class="small">Tidak ada antrian</span>';
- } else {
-   // restore typing value if we skipped render, but if render happened we restore
-   // actually we skipped render, so keep as is
  }
 }
-
 function delUser(u){ if(!confirm('hapus '+u+'?')) return; saveUsers(getUsers().filter(x=>x.username!=u)); render(); }
 function delReq(id){ saveReqs(getReqs().filter(x=>x.id!=id)); render(); }
 function sendCode(id){
@@ -150,21 +105,25 @@ function sendCode(id){
 }
 function setStatus(id,status){ const reqs=getReqs(); const r=reqs.find(x=>x.id==id); r.status=status; if(status=='failed') r.reason='Rejected by Admin'; saveReqs(reqs); render(); }
 
-render();
-// CEK AUTO CLOSE TAPI JANGAN RE-RENDER PAS NGETIK
+// AUTO DELETE 30 MENIT KALO GA DIKIRIM KODE - TANPA TULISAN
 setInterval(()=>{
- const reqs=getReqs(); let changed=false;
- reqs.forEach(r=>{
-   if(r.status=='waiting' && Date.now()-r.time>30*60*1000){ r.status='failed'; r.reason='Timeout 30 menit'; changed=true; }
-   if(r.status=='code_sent' && Date.now()-r.codeTime>5*60*1000){ r.status='expired'; changed=true; }
+ let reqs=getReqs(); let changed=false;
+ const now=Date.now();
+ const filtered=reqs.filter(r=>{
+   if(r.status=='waiting' && now-r.time>30*60*1000){
+     changed=true; return false; // hapus otomatis
+   }
+   if(r.status=='code_sent' && now-r.codeTime>5*60*1000){
+     changed=true; return false; // kode expired auto hapus juga
+   }
+   return true;
  });
- if(changed){ saveReqs(reqs); }
- // only re-render if not typing
- const active = document.activeElement;
- if(!(active && active.id && active.id.startsWith('c_'))){
-   render();
- }
+ if(changed){ saveReqs(filtered); }
+ const active=document.activeElement;
+ if(!(active && active.id && active.id.startsWith('c_'))){ render(); }
 },2000);
+
+render();
 </script>
 </body>
 </html>
