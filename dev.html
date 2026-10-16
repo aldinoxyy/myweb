@@ -1,18 +1,62 @@
-<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>LèxaaDev</title>
-<style>body{background:#0a0a0a;color:#fff;font-family:sans-serif;padding:15px}.card{background:#1a1a1a;border:1px solid #333;padding:12px;border-radius:10px;margin-bottom:10px} input,button,select{padding:8px;border-radius:6px;border:none;margin:3px} button{background:#fff;color:#000;font-weight:bold;cursor:pointer}</style>
-</head><body>
-<h2>👑 LèxaaDev</h2>
-<div class="card"><h3>Buat Akun LèxaaBot</h3><input id="u" placeholder="username"><input id="p" placeholder="password"><select id="exp"><option value="7">7 Hari</option><option value="30">30 Hari</option><option value="unlimited">Unlimited</option></select><button onclick="create()">Buat</button></div>
-<div class="card"><h3>List Akun</h3><div id="listUser"></div></div>
-<div class="card"><h3>Antrian</h3><div id="listReq"></div></div>
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LèxaaDev Desktop</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family: monospace; }
+body { background:#000; color:#fff; }
+.header { background:#111; border-bottom:1px solid #222; padding:15px 20px; display:flex; justify-content:space-between; position:sticky; top:0; }
+.container { display:grid; grid-template-columns: 320px 1fr; gap:15px; padding:15px; max-width:1300px; margin:auto; }
+.card { background:#111; border:1px solid #222; border-radius:12px; padding:15px; }
+input,select,button { padding:10px; border-radius:8px; border:1px solid #333; background:#000; color:#fff; margin:4px 0; width:100%; }
+button { background:#fff; color:#000; font-weight:bold; cursor:pointer; width:auto; padding:8px 15px; }
+.item { background:#0a0a0a; border:1px solid #222; border-radius:8px; padding:10px; margin:8px 0; font-size:13px; }
+@media(max-width:800px){ .container{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<div class="header"><h3>👑 LèxaaDev - DESKTOP MODE - NO CLOUDFLARE</h3><span style="color:#0f0">● LOCAL</span></div>
+<div class="container">
+<div>
+<div class="card"><h4>CREATE ACCOUNT</h4><input id="u" placeholder="username"><input id="p" placeholder="password"><select id="exp"><option value="7">7 Hari</option><option value="30">30 Hari</option><option value="unlimited">Unlimited</option></select><button onclick="create()">CREATE</button></div>
+<div class="card" style="margin-top:15px"><h4>LIST USER</h4><div id="listUser"></div></div>
+</div>
+<div>
+<div class="card"><h4>ANTRIAN - AUTO CLOSE 30 MENIT</h4><div id="listReq"></div></div>
+</div>
+</div>
 <script>
-const API = 'https://midnight-margaret-planners-copied.trycloudflare.com';
-async function api(url,opt){ const r=await fetch(API+url,opt); return r.json(); }
-async function loadUsers(){ const d=await api('/api/users'); document.getElementById('listUser').innerHTML=d.map(x=>`${x.username} | ${x.isUnlimited?'Unlimited':x.expiredAt} <button onclick="del('${x.username}')">Hapus</button>`).join('<br>'); }
-async function create(){ const username=document.getElementById('u').value; const password=document.getElementById('p').value; const exp=document.getElementById('exp').value; const isUnlimited=exp=='unlimited'; const expiredDays=isUnlimited?0:exp; const r=await api('/api/create',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,password,expiredDays,isUnlimited})}); alert(r.ok?'Berhasil':'Gagal'); loadUsers(); }
-async function del(username){ await api('/api/delete',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username})}); loadUsers(); }
-async function loadReq(){ const d=await api('/api/admin/requests'); document.getElementById('listReq').innerHTML=d.map(x=>`<div class="card"><b>${x.service}</b> - ${x.username} - ${x.phone}<br>Status: ${x.status}<br>${x.status=='waiting'?`Minta kode: <b>${x.service}</b><br><input id="code-${x.id}" placeholder="8 digit"><button onclick="sendCode('${x.id}')">Kirim</button>`:''}${x.status=='code_sent'?`Kode: <b>${x.code}</b><br><button onclick="setStatus('${x.id}','connected')">✅ Connect</button> <button onclick="setStatus('${x.id}','failed')">❌ Gagal</button>`:''}${x.status=='connected'?`✅ Connect`:''}</div>`).join(''); }
-async function sendCode(id){ const code=document.getElementById('code-'+id).value; await api('/api/admin/send-code',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,code})}); loadReq(); }
-async function setStatus(id,status){ await api('/api/admin/set-status',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,status})}); loadReq(); }
+function getUsers(){ return JSON.parse(localStorage.getItem('lex_users')||'[]'); }
+function saveUsers(u){ localStorage.setItem('lex_users', JSON.stringify(u)); }
+function getReqs(){ return JSON.parse(localStorage.getItem('lex_reqs')||'[]'); }
+function saveReqs(r){ localStorage.setItem('lex_reqs', JSON.stringify(r)); }
+
+function loadUsers(){ const d=getUsers(); document.getElementById('listUser').innerHTML=d.length==0?'No user':d.map(x=>`<div class="item">${x.username}<br><small>${x.isUnlimited?'♾️ Unlimited':x.expiredAt}</small><br><button onclick="del('${x.username}')">Delete</button></div>`).join(''); }
+function create(){
+ const username=document.getElementById('u').value,password=document.getElementById('p').value,exp=document.getElementById('exp').value;
+ if(!username||!password) return alert('Isi dulu');
+ const isUnlimited=exp=='unlimited';
+ const expiredAt=isUnlimited?'unlimited':new Date(Date.now()+parseInt(exp)*86400000).toISOString().split('T')[0];
+ const users=getUsers();
+ users.push({username,password,expiredAt,isUnlimited});
+ saveUsers(users); loadUsers(); alert('Created');
+}
+function del(username){ let u=getUsers(); u=u.filter(x=>x.username!=username); saveUsers(u); loadUsers(); }
+function loadReq(){
+ let reqs=getReqs();
+ // auto close 30 menit & kode 5 menit
+ reqs.forEach(r=>{
+   if(r.status=='waiting' && Date.now()-r.time>30*60*1000){ r.status='failed'; r.reason='Timeout 30 menit - Admin tidak menjawab'; }
+   if(r.status=='code_sent' && Date.now()-r.codeTime>5*60*1000){ r.status='expired'; }
+ });
+ saveReqs(reqs);
+ document.getElementById('listReq').innerHTML=reqs.length==0?'<small>No request</small>':reqs.map(x=>`<div class="item"><b>${x.service.toUpperCase()}</b> | ${x.username} | ${x.phone}<br>Status: ${x.status} | ${Math.floor((Date.now()-x.time)/1000)}s ago<br>${x.status=='waiting'?`<input id="code-${x.id}" placeholder="8 digit"><button onclick="sendCode('${x.id}')">Kirim Kode</button>`:''}${x.status=='code_sent'?`Kode: <b>${x.code}</b><br><button onclick="setStatus('${x.id}','connected')">✅ Connect</button> <button onclick="setStatus('${x.id}','failed')">❌ Gagal</button>`:''}${x.status=='connected'?`✅ Connected`:''}<br><button onclick="removeReq('${x.id}')">Hapus</button></div>`).join('');
+}
+function sendCode(id){ const code=document.getElementById('code-'+id).value; let r=getReqs(); const f=r.find(x=>x.id==id); f.code=code; f.status='code_sent'; f.codeTime=Date.now(); saveReqs(r); loadReq(); }
+function setStatus(id,status){ let r=getReqs(); const f=r.find(x=>x.id==id); f.status=status; if(status=='failed') f.reason='Ditolak Admin'; saveReqs(r); loadReq(); }
+function removeReq(id){ let r=getReqs(); r=r.filter(x=>x.id!=id); saveReqs(r); loadReq(); }
 loadUsers(); loadReq(); setInterval(loadReq,3000);
-</script></body></html>
+</script>
+</body>
+</html>
